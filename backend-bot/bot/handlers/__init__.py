@@ -7,8 +7,11 @@ By Bolgaro4ka / 2025
 """
 
 from .start import register_start_handlers
-
+from .help import register_help_handlers
+from .about import register_about_handlers
 
 def register_all_handlers(dp):
     """Register all bot handlers"""
     register_start_handlers(dp)
+    register_help_handlers(dp)
+    register_about_handlers(dp)
