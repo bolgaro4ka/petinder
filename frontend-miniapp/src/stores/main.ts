@@ -24,5 +24,7 @@ export const useMainStore = defineStore('main', () => {
     textSecondary: '#b3b3b3',
   })
 
-  return { colors}
+  const theme = ref<'light' | 'dark'>('dark')
+
+  return { colors, theme }
 })

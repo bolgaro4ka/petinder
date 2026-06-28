@@ -34,11 +34,11 @@ const thirdPet = computed(() => visiblePets.value[2] ?? null)
 const hasMorePets = computed(() => currentIndex.value < props.pets.length)
 const swipeIndicator = computed(() => {
     if (dragOffset.value > 40) {
-        return { label: 'LIKE', color: 'var(--primary-color)' }
+        return { label: 'НРАВИТСЯ', color: 'var(--primary-color)' }
     }
 
     if (dragOffset.value < -40) {
-        return { label: 'PASS', color: '#ff6b6b' }
+        return { label: 'НЕ НРАВИТСЯ', color: '#ff6b6b' }
     }
 
     return null
@@ -62,19 +62,23 @@ function animateTopCard(x: number, rotate: number, scale: number, opacity = 1) {
     const element = topCardRef.value
     if (!element) return
 
-        ; (animate as any)(
-            element,
-            {
-                x: [0, x],
-                rotate: [0, rotate],
-                scale: [1, scale],
-                opacity: [1, opacity],
-            },
-            {
-                duration: 0.5,
-                easing: [0.22, 1, 0.36, 1],
-            },
-        )
+    const currentX = dragOffset.value
+    const currentRotate = currentX / 16
+    const currentScale = Math.max(0.94, 1 - Math.abs(currentX) / 1400)
+
+    animate(
+        element,
+        {
+            x: [currentX, x],
+            rotate: [currentRotate, rotate],
+            scale: [currentScale, scale],
+            opacity: [1, opacity],
+        },
+        {
+            duration: 0.5,
+            easing: [0.22, 1, 0.36, 1],
+        }
+    )
 }
 
 function advanceCard() {
@@ -199,16 +203,7 @@ function cardStyle(index: number) {
 
 <template>
     <section class="deck">
-        <div class="deck__header">
-            <div>
-                <p class="deck__eyebrow">Pet Tinder</p>
-                <h2>Найдите нового друга</h2>
-            </div>
-            <div class="deck__stats">
-                <span>{{ currentIndex + 1 }}/{{ pets.length }}</span>
-                <span>{{ likedPets.length }} лайков</span>
-            </div>
-        </div>
+
 
         <div v-if="hasMorePets && currentPet" class="deck__stage">
             <div class="deck__stack">
@@ -218,7 +213,7 @@ function cardStyle(index: number) {
                             <img :src="normalizePhoto(thirdPet.photo)" :alt="thirdPet.name" loading="lazy"
                                 decoding="async" />
                             <div class="pet-card__content">
-                                <h3>{{ thirdPet.name }}</h3>
+                                <h2>{{ thirdPet.name }}</h2>
                                 <p>{{ thirdPet.age }} лет · {{ thirdPet.likes }} лайков</p>
                             </div>
                         </div>
@@ -231,7 +226,7 @@ function cardStyle(index: number) {
                             <img :src="normalizePhoto(nextPet.photo)" :alt="nextPet.name" loading="lazy"
                                 decoding="async" />
                             <div class="pet-card__content">
-                                <h3>{{ nextPet.name }}</h3>
+                                <h2>{{ nextPet.name }}</h2>
                                 <p>{{ nextPet.age }} лет · {{ nextPet.likes }} лайков</p>
                             </div>
                         </div>
@@ -254,7 +249,7 @@ function cardStyle(index: number) {
                             <div class="pet-card__content">
                                 <div class="pet-card__title-row">
                                     <div>
-                                        <h3>{{ currentPet.name }}</h3>
+                                        <h2>{{ currentPet.name }}</h2>
                                         <p>{{ currentPet.age }} лет · {{ currentPet.likes }} лайков</p>
                                     </div>
                                     <span class="pet-card__badge">NEW</span>
@@ -266,7 +261,7 @@ function cardStyle(index: number) {
                         <div class="pet-card__face pet-card__face--back">
                             <div class="pet-card__contact">
                                 <p class="pet-card__eyebrow">Контакты хозяина</p>
-                                <h3>{{ currentPet.host_name }}</h3>
+                                <h2>{{ currentPet.host_name }}</h2>
                                 <p>{{ currentPet.host_phone }}</p>
                                 <p>Пишите, если питомец вам понравился.</p>
                             </div>
@@ -292,7 +287,7 @@ function cardStyle(index: number) {
         </div>
 
         <div v-else class="deck__empty">
-            <h3>Пока больше нет новых карточек</h3>
+            <h2>Пока больше нет новых карточек</h2>
             <p>Вы посмотрели все доступные питомцы. Скоро добавим сохранение лайков и больше данных.</p>
         </div>
     </section>
@@ -300,32 +295,22 @@ function cardStyle(index: number) {
 
 <style scoped lang="scss">
 .deck {
-    min-height: calc(100vh - 72px);
+    min-height: calc(100vh - 120px);
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
     padding: 1.25rem;
-    color: var(--text-primary-color);
+    color: var(--on-primary-color);
 }
 
-.deck__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-}
+
 
 .deck__eyebrow {
     margin: 0 0 0.2rem;
     font-size: 0.8rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--text-secondary-color);
-}
-
-.deck__header h2 {
-    margin: 0;
-    font-size: 1.4rem;
+    color: var(--on-primary-color);
 }
 
 .deck__stats {
@@ -333,7 +318,7 @@ function cardStyle(index: number) {
     flex-direction: column;
     align-items: flex-end;
     gap: 0.35rem;
-    color: var(--text-secondary-color);
+    color: var(--on-primary-color);
     font-size: 0.95rem;
 }
 
@@ -347,20 +332,20 @@ function cardStyle(index: number) {
 .deck__stack {
     position: relative;
     min-height: 480px;
+    z-index: 20;
 }
 
 .pet-card {
     position: absolute;
+    z-index: 10;
     inset: 0;
     border-radius: 28px;
     overflow: hidden;
-    background: linear-gradient(135deg, color-mix(in srgb, var(--surface-color) 88%, var(--primary-color) 12%), var(--secondary-color));
-    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.34);
+    background: var(--primary-color);
     touch-action: none;
     user-select: none;
     perspective: 1000px;
     will-change: transform;
-    border: 1px solid color-mix(in srgb, var(--outline-color) 80%, transparent 20%);
 }
 
 .pet-card--top {
@@ -399,7 +384,7 @@ function cardStyle(index: number) {
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
-    background: linear-gradient(135deg, var(--primary-color), var(--triary-color));
+    background: var(--triary-color);
     transform: rotateY(180deg);
 }
 
@@ -423,7 +408,7 @@ function cardStyle(index: number) {
     flex-direction: column;
     justify-content: space-between;
     padding: 1.2rem;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.28));
+
 }
 
 .pet-card__title-row {
@@ -433,20 +418,21 @@ function cardStyle(index: number) {
     gap: 1rem;
 }
 
-.pet-card h3 {
+.pet-card h2 {
     margin: 0 0 0.25rem;
     font-size: 1.35rem;
+    color: var(--on-primary-color);
 }
 
 .pet-card p {
     margin: 0;
-    color: var(--text-secondary-color);
+    color: var(--on-primary-color);
 }
 
 .pet-card__badge {
     padding: 0.35rem 0.6rem;
     border-radius: 999px;
-    background: var(--primary-color);
+    background: var(--secondary-color);
     color: var(--on-primary-color);
     font-size: 0.8rem;
     font-weight: 600;
@@ -466,7 +452,7 @@ function cardStyle(index: number) {
     color: var(--on-primary-color);
 }
 
-.pet-card__contact h3 {
+.pet-card__contact h2 {
     font-size: 1.4rem;
 }
 
@@ -527,7 +513,7 @@ function cardStyle(index: number) {
 }
 
 .deck__button--like {
-    background: var(--primary-color);
+    background: var(--secondary-color);
     color: var(--on-primary-color);
 }
 

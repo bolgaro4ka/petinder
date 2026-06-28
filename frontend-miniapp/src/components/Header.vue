@@ -9,8 +9,13 @@ const isBurgerOpen = ref<boolean>(false)
 <template>
     <header>
         <div class="header__content">
-            <h1>Petider</h1>
-            <button @click="isBurgerOpen = !isBurgerOpen">
+
+            <RouterLink to="/">
+                <h1>
+                    Petinder
+                </h1>
+            </RouterLink>
+            <button @click="isBurgerOpen = !isBurgerOpen" aria-label="Petinder menu">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                     fill="#e3e3e3">
                     <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
@@ -32,7 +37,7 @@ const isBurgerOpen = ref<boolean>(false)
     align-items: center;
 
     h1 {
-        color: var(--text-primary-color);
+        color: var(--secondary-color);
     }
 
     button {

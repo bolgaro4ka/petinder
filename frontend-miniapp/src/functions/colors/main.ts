@@ -264,7 +264,19 @@ export function setTheme(
     root.style.setProperty('--text-primary-color', colors.textPrimary)
     root.style.setProperty('--text-secondary-color', colors.textSecondary)
 
+    localStorage.setItem('theme', theme)
+    
     const musicPlayer = useMainStore()
     musicPlayer.colors = colors
+    musicPlayer.theme = theme
   })
+}
+
+export function changeTheme() {
+    if (!localStorage.getItem('theme')) localStorage.setItem('theme', 'light')
+    if (localStorage.getItem('theme') === 'dark')
+        setTheme('light')
+    else {
+        setTheme('dark')
+    }
 }
