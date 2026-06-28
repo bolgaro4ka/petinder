@@ -33,8 +33,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-a[target='_blank']::after {
-  content: '\2197';
+a[target='_blank']::before {
+  content: '\2197\00a0';
+  color: var(--triary-color);
+}
+
+a[target='_blank'] {
+  color: var(--triary-color);
 }
 
 svg {
@@ -63,7 +68,7 @@ textarea {
     'Droid Sans',
     'Helvetica Neue',
     sans-serif;
-  padding:  10px 20px;
+  padding: 10px 20px;
   font-size: 16px;
 }
 
@@ -74,4 +79,11 @@ textarea:focus {
 textarea::placeholder {
   color: var(--text-primary-color);
   font-size: 16px;
+}
+
+.common__overflow {
+  padding: 5px;
+  max-height: calc(100vh - 157px);
+  overflow-y: scroll;
+  overflow-x: hidden;
 }

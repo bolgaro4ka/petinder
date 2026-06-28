@@ -22,7 +22,7 @@ import SiderLink from './particles/SiderLink.vue';
                 </svg>
             </SiderLink>
 
-            <SiderLink title="Избранное" to="/">
+            <SiderLink title="Избранное" to="/likes">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                     fill="#e3e3e3">
                     <path

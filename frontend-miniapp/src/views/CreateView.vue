@@ -15,5 +15,9 @@ import CreateForm from '@/components/CreateForm.vue';
     padding: 5px;
     overflow-y: scroll;
     max-height: calc(100vh - 120px);
+
+    h2 {
+        margin: 10px 0;
+    }
 }
 </style>

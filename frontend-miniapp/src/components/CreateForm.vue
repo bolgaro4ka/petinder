@@ -31,7 +31,8 @@ const photos = ref([]);
                 <label for="tel">Телефон для связи</label>
             </div>
         </div>
-        <button>Создать</button>
+        <button class="create-btn">Создать</button>
+        <button class="save-draft">Сохранить в черновики</button>
     </div>
 
 </template>
@@ -60,7 +61,16 @@ const photos = ref([]);
         margin-top: 20px;
         background-color: var(--primary-color);
         height: 40px;
-        border-radius: 5px;
+        border-radius: 20px;
+        border: none;
+        outline: none;
+    }
+
+    .save-draft {
+        margin-top: 10px;
+        border: 1px solid var(--primary-color);
+        background-color: transparent;
+        color: var(--text-primary-color);
     }
 }
 </style>
