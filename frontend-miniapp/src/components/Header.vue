@@ -37,7 +37,7 @@ const isBurgerOpen = ref<boolean>(false)
     align-items: center;
 
     h1 {
-        color: var(--secondary-color);
+        color: var(--primary-color);
     }
 
     button {
