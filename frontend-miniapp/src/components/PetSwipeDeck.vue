@@ -295,7 +295,7 @@ function cardStyle(index: number) {
 
 <style scoped lang="scss">
 .deck {
-    min-height: calc(100vh - 120px);
+    height: calc(100vh - 200px);
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
@@ -547,7 +547,7 @@ function cardStyle(index: number) {
     }
 
     .deck__stack {
-        min-height: 520px;
+        min-height: calc(100dvh - 210px);
     }
 }
 </style>
