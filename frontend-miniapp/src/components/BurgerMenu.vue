@@ -95,7 +95,7 @@ const mainStore = useMainStore()
         align-items: center;
 
         h1 {
-            color: var(--secondary-color);
+            color: var(--primary-color);
         }
     }
 
